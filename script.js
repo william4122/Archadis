@@ -78,4 +78,3 @@ function highlightKeywords(logText, keywords, className) {
     logText = logText.replace(regex, `<span class="${className}">${keyword}</span>`);
   }
   return logText;
-}
