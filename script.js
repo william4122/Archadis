@@ -79,4 +79,3 @@ function highlightKeywords(logText, keywords, className) {
   }
   return logText;
 }
-
