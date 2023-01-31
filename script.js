@@ -1,8 +1,18 @@
-const logs = getLogEntries(); 
-logs.map(log => {
-   let logSections = log.split("][");
-   let timestamp = logSections[0];
-   // do something with the timestamp, such as converting it to local time
+let logs = [];
+
+const fileInput = document.getElementById("file-input");
+fileInput.addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    logs = event.target.result.split("\n");
+    logs.map(log => {
+      let logSections = log.split("][");
+      let timestamp = logSections[0];
+      // do something with the timestamp, such as converting it to local time
+    });
+  };
+  reader.readAsText(file);
 });
 
 document.addEventListener("DOMContentLoaded", function() {
