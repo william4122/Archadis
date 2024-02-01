@@ -5,15 +5,46 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Logalizer</h1>
-    <div class="form-group">
-      <label for="file-upload">Choose a log file</label>
-      <input type="file" id="file-upload">
+  <!--This div is a sidebar for the menu-->
+  <div class="sidebar">
+    <ul>
+      <li><a href="#logalyzer">Logalyzer</a></li>
+      <!-- Additional sidebar items can be added here -->
+    </ul>
+  </div>
+  <div class="tab">
+    <button class="tablinks" onclick="openLog(event, 'dEDR')">dEDR</button>
+    <button class="tablinks" onclick="openLog(event, 'dAV')">dAV</button>
+  </div>
+  
+  <div id="dEDR" class="tabcontent">
+    <!-- Content for dEDR logs -->
+    <div id="dEDR" class="tabcontent">
+      <div class="container">
+        <h1>dEDR logs</h1>
+        <div class="form-group">
+          <label for="file-upload-dedr">Choose a log file</label>
+          <input type="file" id="file-upload-dedr">
+        </div>
+        <div class="log-container" id="dedr-logs"></div>
+      </div>
     </div>
-    <div class="log-container" id="logs"></div>
+  </div>
+  <div id="dAV" class="tabcontent">
+    <!-- dAV Tab Content -->
+  <div id="dAV" class="tabcontent">
+  <div class="container">
+    <h1>dAV logs</h1>
+    <div class="form-group">
+      <label for="file-upload-dav">Choose a log file</label>
+      <input type="file" id="file-upload-dav">
+    </div>
+    <div class="log-container" id="dav-logs"></div>
+  </div>
+  </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+
