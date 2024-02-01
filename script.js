@@ -1,99 +1,71 @@
-let logs = [];
-
-const fileInput = document.getElementById("file-input");
-fileInput.addEventListener("change", function(event) {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  reader.onload = function(event) {
-    logs = event.target.result.split("\n");
-    logs.map(log => {
-      let logSections = log.split("][");
-      let timestamp = logSections[0];
-      // do something with the timestamp, such as converting it to local time
-    });
-  };
-  reader.readAsText(file);
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  convertTimestampsOnHover();
-});
-
-let file = document.getElementById("file-upload").files[0];
-let reader = new FileReader();
-reader.onload = function() {
-  let logText = reader.result;
-  logText = convertTimestamps(logText);
-  document.getElementById("logs").innerHTML = logText;
-  convertTimestampsOnHover();
-};
-
-document.getElementById("file-upload").addEventListener("change", function() {
-  let file = this.files[0];
-  let reader = new FileReader();
-  reader.onload = function() {
-    let logText = reader.result;
-    logText = convertTimestamps(logText);
-    document.getElementById("logs").innerHTML = logText;
-    convertTimestampsOnHover();
-  };
-  reader.readAsText(file);
-});
-
-function convertTimestamps(logText) {
-  // Create a regular expression to match timestamps in the format "YYYY-MM-DD HH:mm:ss UTC"
-  let regex = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC/g;
-  // Replace all occurrences of the timestamp with a span element with the "timestamp" class
-  return logText.replace(regex, `<span class="timestamp">$&</span>`);
+/* CSS for logdanger class */
+.logdanger {
+color: #920000;
 }
 
-function convertTimestampsOnHover() {
-  let timestampElements = document.getElementsByClassName("timestamp");
-  for (let i = 0; i < timestampElements.length; i++) {
-    let timestampElement = timestampElements[i];
-    let utcTimestamp = timestampElement.textContent;
-    timestampElement.onmouseover = function() {
-      let localTimestamp = new Date(utcTimestamp);
-      localTimestamp = localTimestamp.toLocaleString();
-      timestampElement.textContent = localTimestamp;
-    }
-    timestampElement.onmouseout = function() {
-      timestampElement.textContent = utcTimestamp;
-    }
+/* CSS for loggood class */
+.loggood {
+color: #2fe42f;
+}
+
+/* CSS for loginfo class */
+.loginfo {
+color: #1e1ed8;
+}
+/* respect the format of the original log file */ 
+.log-container {
+white-space: pre-wrap;
+}
+/*can we get a gray background please, light mode hurts */
+body {
+background-color: #404040bd;
+}
+
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
   }
-}
-
-// do something with the other sections, such as highlighting keywords
-
-let input = document.getElementById("file-upload");
-input.addEventListener("change", function(event) {
-  let file = event.target.files[0];
-  let reader = new FileReader();
-  reader.onload = function(event) {
-    let logText = event.target.result;
-    // Create a list of keywords for each class
-    let logDangerKeywords = ["ERR", "Could not fetch jobs: Invalid server response: 404", "fail", "Service stop signal received.", "Cannot save RTS data: unable to open database file", "Received stop signal from service controller", "Cannot finish fetching user accounts:"];
-    let logGoodKeywords = ["success", "Results sent, scan is complete", "completed", "Agent has started", "Found matches!", "Yara scan completed." ];
-    let logInfoKeywords = ["INF", "Waiting for remote API to approve upload", "status", "Starting as windows service"];
-// Apply the highlightKeywords function to each keyword list
-logText = highlightKeywords(logText, logDangerKeywords, "logdanger");
-logText = highlightKeywords(logText, logGoodKeywords, "loggood");
-logText = highlightKeywords(logText, logInfoKeywords, "loginfo");
-// Display the log file with the keywords highlighted in the appropriate class
-let logsElement = document.getElementById("logs");
-logsElement.innerHTML = logText;
-};
-reader.readAsText(file);
-});
-
-function highlightKeywords(logText, keywords, className) {
-// Iterate through the list of keywords
-for (let i = 0; i < keywords.length; i++) {
-let keyword = keywords[i];
-// Create a regular expression with the keyword and the global flag
-let regex = new RegExp(keyword, "g");
-// Replace all occurrences of the keyword with a span element with the className class
-logText = logText.replace(regex, '<span class="${className}">${keyword}</span>');
-}
-return logText;
-}
+  .sidebar a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+  }
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+  .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  .tab button:hover {
+    background-color: #ddd;
+  }
+  .tab button.active {
+    background-color: #ccc;
+  }
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
