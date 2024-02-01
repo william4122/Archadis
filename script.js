@@ -1,71 +1,70 @@
-/* CSS for logdanger class */
-.logdanger {
-color: #920000;
+// Add event listener for dAV log file input
+document.getElementById("file-upload-dav").addEventListener("change", function(event) {
+  processFile(event, 'dav-logs');
+});
+
+// Add event listener for dEDR log file input
+document.getElementById("file-upload-dedr").addEventListener("change", function(event) {
+  processFile(event, 'dedr-logs');
+});
+
+function processFile(event, logContainerId) {
+  let file = event.target.files[0];
+  let reader = new FileReader();
+  reader.onload = function(event) {
+    let logText = event.target.result;
+    // Process log text (highlight keywords, convert timestamps, etc.)
+    logText = processLogText(logText); // Implement this function as needed
+    document.getElementById(logContainerId).innerHTML = logText;
+  };
+  reader.readAsText(file);
 }
 
-/* CSS for loggood class */
-.loggood {
-color: #2fe42f;
+function processLogText(logText) {
+  // Implement the logic for processing log text (highlighting, timestamp conversion, etc.)
+  return logText;
 }
 
-/* CSS for loginfo class */
-.loginfo {
-color: #1e1ed8;
-}
-/* respect the format of the original log file */ 
-.log-container {
-white-space: pre-wrap;
-}
-/*can we get a gray background please, light mode hurts */
-body {
-background-color: #404040bd;
+// Other functions (highlightKeywords, convertTimestamps, convertTimestampsOnHover, etc.)
+function processLogText(logText) {
+  // Split the log text into lines
+  const lines = logText.split("\n");
+
+  // Define mappings between log level labels and CSS classes
+  const logLevelMappings = {
+    "[INF]": "loginfo",
+    "[ERR]": "logdanger",
+    // Add other mappings as needed
+  };
+
+  // Process each line and apply the appropriate class and timestamp conversion
+  const processedLines = lines.map(line => {
+    let processedLine = line;
+
+    // Apply log level class
+    for (const [label, className] of Object.entries(logLevelMappings)) {
+      if (processedLine.includes(label)) {
+        processedLine = `<span class="${className}">${processedLine}</span>`;
+        break; // Stop checking for other log levels if a match is found
+      }
+    }
+
+    // Apply timestamp conversion
+    processedLine = convertTimestamps(processedLine);
+
+    return processedLine;
+  });
+
+  // Join the processed lines back into a single string
+  return processedLines.join("\n");
 }
 
-.sidebar {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-  }
-  .sidebar a {
-    padding: 6px 8px 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-  }
-  .sidebar a:hover {
-    color: #f1f1f1;
-  }
-  .tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-  }
-  .tab button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-  }
-  .tab button:hover {
-    background-color: #ddd;
-  }
-  .tab button.active {
-    background-color: #ccc;
-  }
-  .tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-  }
+function convertTimestamps(logText) {
+  // Create a regular expression to match timestamps in the format "YYYY-MM-DD HH:mm:ss UTC"
+  let regex = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC/g;
   
+  // Replace all occurrences of the timestamp with a span element with the "timestamp" class
+  return logText.replace(regex, match => `<span class="timestamp">${match}</span>`);
+}
+
+// Continue with the rest of your code...
