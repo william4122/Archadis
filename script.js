@@ -20,11 +20,6 @@ function processFile(event, logContainerId) {
   reader.readAsText(file);
 }
 
-function processLogText(logText) {
-  // Implement the logic for processing log text (highlighting, timestamp conversion, etc.)
-  return logText;
-}
-
 // Other functions (highlightKeywords, convertTimestamps, convertTimestampsOnHover, etc.)
 function processLogText(logText) {
   // Split the log text into lines
@@ -67,4 +62,16 @@ function convertTimestamps(logText) {
   return logText.replace(regex, match => `<span class="timestamp">${match}</span>`);
 }
 
-// Continue with the rest of your code...
+document.getElementById("logalyzerTab").addEventListener("click", function() {
+  // Show the log tabs
+  document.querySelector(".logTabs").style.display = "block";
+
+  // Hide other content if necessary
+  // ...
+});
+
+function openLog(evt, logName) {
+  // Existing function to handle tab switching
+  // ...
+}
+
